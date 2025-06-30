@@ -13,8 +13,8 @@ app.secret_key = '584e6e31e50ccb19e9c09ecee1e9e6712bba7334fbea2489507d880cc76385
 
 # AWS Setup using IAM Role
 REGION = 'ap-south-1'  # Replace with your actual AWS region
-dynamodb = boto3.resource('dynamodb', region_name=REGION)
-sns_client = boto3.client('sns', region_name=REGION)
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+sns_client = boto3.client('sns', region_name='us-east-1')
 
 users_table = dynamodb.Table('travelgo_users')
 trains_table = dynamodb.Table('trains')
@@ -147,7 +147,9 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user=users_table.find_one({"email":email})
+        response = users_table.get_item(Key={'email': email})
+        user = response.get('Item')
+
         
         if user and check_password_hash(user['hashed_password'], password):
             session['email'] = email
@@ -674,7 +676,9 @@ def testimonials():
 
 # ---------------- RUN ----------------
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+   app.run(host='0.0.0.0', port=5000, debug=True)
+
+
 
    
     
