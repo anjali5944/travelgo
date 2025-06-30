@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirm Hotel Booking | TravelGo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f3f8ff;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    h2 {
+      color: #004aad;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    .booking-summary p {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .total-price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #004aad;
+      text-align: right;
+      margin-top: 20px;
+      border-top: 1px dashed #ccc;
+      padding-top: 15px;
+    }
+    .confirm-btn-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .confirm-btn {
+      background-color: #019401;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+      transition: background 0.3s;
+    }
+    .confirm-btn:hover {
+      background-color: #008955;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Confirm Your Hotel Booking</h2>
+
+  <form method="POST" action="{{ url_for('confirm_hotel_details') }}">
+    <div class="booking-summary">
+      <p><strong>Hotel:</strong> {{ hotel.hotel_name }}</p>
+      <p><strong>Location:</strong> {{ hotel.location }}</p>
+      <p><strong>Check-in:</strong> {{ hotel.checkin_date }}</p>
+      <p><strong>Check-out:</strong> {{ hotel.checkout_date }}</p>
+      <p><strong>Guests:</strong> {{ hotel.num_guests }}</p>
+      <p><strong>Rooms:</strong> {{ hotel.num_rooms }}</p>
+      <p><strong>Room Type:</strong> Deluxe Room</p>
+      <p><strong>Price per Night:</strong> ₹{{ hotel.price }}</p>
+      <div class="total-price">
+        Total Price: ₹{{ hotel.price * hotel.num_rooms }}
+      </div>
+    </div>
+
+    <!-- Hidden Inputs -->
+    <input type="hidden" name="hotel_name" value="{{ hotel.hotel_name }}">
+    <input type="hidden" name="location" value="{{ hotel.location }}">
+    <input type="hidden" name="checkin_date" value="{{ hotel.checkin_date }}">
+    <input type="hidden" name="checkout_date" value="{{ hotel.checkout_date }}">
+    <input type="hidden" name="num_rooms" value="{{ hotel.num_rooms }}">
+    <input type="hidden" name="num_guests" value="{{ hotel.num_guests }}">
+    <input type="hidden" name="price" value="{{ hotel.price }}">
+    <input type="hidden" name="room_type" value="Deluxe Room">
+
+    <div class="confirm-btn-container">
+      <button type="submit" class="confirm-btn">Confirm Booking</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

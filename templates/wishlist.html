@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Wishlist | TravelGo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+
+    .container {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+
+    .wishlist-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 40px;
+      color: #2c3e50;
+    }
+
+    .wishlist-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: #333;
+    }
+
+    .wishlist-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .wishlist-card img {
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .card-text {
+      font-size: 0.95rem;
+      margin: 0.5rem 0 1rem;
+      color: #555;
+    }
+
+    .btn-remove {
+      background-color: #ff4d4f;
+      color: white;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .btn-remove:hover {
+      background-color: #e04344;
+    }
+
+    .empty-message {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-top: 30px;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .wishlist-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="wishlist-title">💖 Your Travel Wishlist</h2>
+  <div id="wishlist-container" class="row g-4 justify-content-center"></div>
+</div>
+
+<script>
+  async function loadWishlist() {
+    const response = await fetch('/wishlist_data');
+    const data = await response.json();
+    const container = document.getElementById('wishlist-container');
+    container.innerHTML = '';
+
+    if (!data.wishlist.length) {
+      container.innerHTML = '<p class="empty-message">Your wishlist is empty. Start adding your dream destinations!</p>';
+      return;
+    }
+
+    data.wishlist.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'col-sm-10 col-md-6 col-lg-4';
+      card.innerHTML = `
+        <div class="wishlist-card card">
+          <img src="${item.item_image || 'https://via.placeholder.com/400x200?text=No+Image'}" class="card-img-top" alt="${item.item_name}">
+          <div class="card-body">
+            <h5 class="card-title">${item.item_name}</h5>
+            <p class="card-text">${item.item_details}</p>
+            <button class="btn btn-remove" onclick="removeItem('${item.item_id}')">🗑 Remove</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  async function removeItem(itemId) {
+    const res = await fetch('/remove_from_wishlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ item_id: itemId })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      loadWishlist();
+    } else {
+      alert('Failed to remove item');
+    }
+  }
+
+  loadWishlist();
+</script>
+
+</body>
+</html>

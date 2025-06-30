@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>TravelGo Home</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      scroll-behavior: smooth;
+      background-color: #000;
+    }
+
+    .hero {
+      min-height: 100vh;
+      background: url('https://images.unsplash.com/photo-1739582766954-800630482ccd?q=80&w=1170&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-text {
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+      max-width: 90%;
+    }
+
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    .top-right a {
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 15px;
+      margin-left: 10px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .top-right a:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .testimonial-section {
+      background: linear-gradient(to right, #f5b4e1, #b8edf7, #9bd6ef);
+      padding: 60px 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .testimonial-section h2 {
+      font-size: 2.4rem;
+      color: #080004d2;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .testimonial-carousel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .testimonial-slider {
+      position: relative;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .testimonial-card {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 30px 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      color: #0b0000a5;
+      transition: transform 0.5s ease;
+    }
+
+    .testimonial-card.active {
+      display: flex;
+    }
+
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-header img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 3px solid #ffde59;
+    }
+
+    .testimonial-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .testimonial-location {
+      font-size: 0.9rem;
+      color: #ff595908;
+    }
+
+    .testimonial-text {
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .arrow {
+      font-size: 2rem;
+      background: #f5f7f7;
+      color: #333;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .arrow:hover {
+      transform: scale(1.1);
+      background-color: #2d13d4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="top-right">
+      <a href="{{ url_for('register') }}">Register</a>
+      <a href="{{ url_for('login') }}">Login</a>
+    </div>
+    <div class="hero-text">
+      Welcome! Ready to book your next adventure?
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="testimonial-section">
+    <h2>🌟 What Our Travelers Say</h2>
+
+    <div class="testimonial-carousel-container">
+      <button class="arrow left" onclick="changeTestimonial(-1)">←</button>
+
+      <div class="testimonial-slider">
+        <div class="testimonial-card active">
+          <div class="testimonial-header">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya">
+            <div>
+              <div class="testimonial-name">Priya</div>
+              <div class="testimonial-location">Mumbai</div>
+            </div>
+          </div>
+          <div class="testimonial-text">
+            “TravelGo made my trip planning effortless. Booked everything in one place and had a smooth journey!”
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Arjun">
+            <div>
+              <div class="testimonial-name">Arjun</div>
+              <div class="testimonial-location">Bangalore</div>
+            </div>
+          </div>
+          <div class="testimonial-text">
+            “Amazing experience with TravelGo. Got great hotel deals and the UI is so easy to use.”
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sneha">
+            <div>
+              <div class="testimonial-name">Sneha</div>
+              <div class="testimonial-location">Delhi</div>
+            </div>
+          </div>
+          <div class="testimonial-text">
+            “I loved the seat booking interface! It was so cool to pick my own seat visually.”
+          </div>
+        </div>
+      </div>
+
+      <button class="arrow right" onclick="changeTestimonial(1)">→</button>
+    </div>
+  </div>
+
+  <script>
+    let currentTestimonial = 0;
+    const testimonials = document.querySelectorAll('.testimonial-card');
+
+    function showTestimonial(index) {
+      testimonials.forEach((card, i) => {
+        card.classList.toggle('active', i === index);
+      });
+    }
+
+    function changeTestimonial(direction) {
+      currentTestimonial += direction;
+      if (currentTestimonial < 0) currentTestimonial = testimonials.length - 1;
+      if (currentTestimonial >= testimonials.length) currentTestimonial = 0;
+      showTestimonial(currentTestimonial);
+    }
+
+    // Show first testimonial initially
+    showTestimonial(currentTestimonial);
+  </script>
+
+</body>
+</html>

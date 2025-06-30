@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | TravelGo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('https://plus.unsplash.com/premium_photo-1664366320037-6cad9e3c6e20?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      color: white;
+      margin: 0;
+      backdrop-filter: brightness(0.85);
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: white !important;
+      font-weight: 500;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 2rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+    }
+
+    .scroll-row {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 20px 0;
+    }
+
+    .destination-card {
+      min-width: 350px;
+      text-align: center;
+    }
+
+    .destination-card img {
+      border-radius: 12px;
+      height: 210px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .destination-card h6 {
+      margin-top: 15px;
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    }
+
+    .scroll-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/dashboard">TravelGo</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/wishlist">💖 Wishlist</a></li>
+          <li class="nav-item"><a class="nav-link" href="/bookings">📋 My Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout">🚪 Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome -->
+  <div class="container text-center mt-5">
+    <h2 class="dashboard-header">
+      Welcome to TravelGo, <strong>{{ session['username'] }}</strong> 🌍
+    </h2>
+    <p>Discover your next adventure below</p>
+  </div>
+
+  <!-- Trending Destinations -->
+  <div class="container mt-5">
+    <h4 class="text-white mb-3">🔥 Trending Destinations</h4>
+    <div class="scroll-row">
+      <div class="destination-card" onclick="showDetails(
+  'Paris, France',
+  `The city of lights and romance.<br>
+  Explore the Eiffel Tower, Louvre Museum, and charming cafés.<br>
+  Perfect for art, history, and culture lovers.`,
+  'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80'
+)">
+  <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80" alt="Paris">
+  <h6>Paris, France</h6>
+</div>
+<div class="destination-card" onclick="showDetails(
+  'Bali, Indonesia',
+  `An exotic paradise with lush jungles, serene beaches, and vibrant culture.<br>
+  Visit the iconic rice terraces in Ubud and sacred temples like Tanah Lot.<br>
+  Ideal for adventure seekers, yoga lovers, and digital nomads alike.`,
+  'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=500&q=60'
+)">
+  <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=500&q=60" alt="Bali">
+  <h6>Bali, Indonesia</h6>
+</div>
+<div class="destination-card" onclick="showDetails(
+  'Goa, India',
+  `A coastal gem known for golden beaches, vibrant nightlife, and laid-back vibes.<br>
+  Experience Portuguese-influenced architecture, local seafood, and lively flea markets.<br>
+  Perfect for sunbathing, water sports, and festive beach parties.`,
+  'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=500&q=60'
+)">
+  <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=500&q=60" alt="Goa">
+  <h6>Goa, India</h6>
+</div>
+ <!-- Tokyo -->
+  <div class="destination-card" onclick="showDetails(
+    'Tokyo, Japan',
+    `A dazzling mix of tradition and innovation.<br>
+    Visit ancient temples, futuristic skyscrapers, and experience incredible cuisine.<br>
+    Great for tech lovers, fashionistas, and cultural explorers.`,
+    'https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=500&q=60'
+  )">
+    <img src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=500&q=60" alt="Tokyo">
+    <h6>Tokyo, Japan</h6>
+  </div>
+
+  <!-- New York -->
+  <div class="destination-card" onclick="showDetails(
+    'New York, USA',
+    `The city that never sleeps.<br>
+    Explore Times Square, Central Park, Broadway, and world-class museums.<br>
+    A must-visit for urban adventurers and culture seekers.`,
+    'https://images.unsplash.com/photo-1533106418989-88406c7cc8c8?auto=format&fit=crop&w=500&q=60'
+  )">
+    <img src="https://plus.unsplash.com/premium_photo-1697730150275-dba1cfe8af9c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="New York">
+    <h6>New York, USA</h6>
+  </div>
+
+  <!-- Dubai -->
+  <div class="destination-card" onclick="showDetails(
+    'Dubai, UAE',
+    `A futuristic desert city full of luxury and innovation.<br>
+    Skyscrapers, shopping, desert safaris, and world-class experiences await.<br>
+    Perfect for luxury lovers and architectural enthusiasts.`,
+    'https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&w=500&q=60'
+  )">
+    <img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&w=500&q=60" alt="Dubai">
+    <h6>Dubai, UAE</h6>
+  </div>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let modalData = {};
+
+  function showDetails(name, details, imageUrl, relatedCities = []) {
+    modalData = { name, details, imageUrl, relatedCities };
+    document.getElementById('destinationModalLabel').textContent = name;
+    document.getElementById('modalDetails').innerHTML = details;
+    document.getElementById('modalImage').src = imageUrl;
+
+    // Render related cities
+    const relatedCitiesList = document.getElementById('relatedCitiesList');
+    relatedCitiesList.innerHTML = '';
+    if (relatedCities.length > 0) {
+      relatedCities.forEach(city => {
+        const cityBadge = document.createElement('span');
+        cityBadge.className = 'badge rounded-pill bg-secondary text-light p-2';
+        cityBadge.textContent = city;
+        relatedCitiesList.appendChild(cityBadge);
+      });
+      document.getElementById('relatedCitiesContainer').style.display = 'block';
+    } else {
+      document.getElementById('relatedCitiesContainer').style.display = 'none';
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('destinationModal'));
+    modal.show();
+  }
+
+  function addToWishlistFromModal() {
+    fetch('/add_to_wishlist_json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        item_name: modalData.name,
+        item_details: modalData.details,
+        item_image: modalData.imageUrl
+      })
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch(() => alert('Failed to add to wishlist.'));
+  }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="destinationModal" tabindex="-1" aria-labelledby="destinationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content text-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="destinationModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex flex-column align-items-center">
+        <img id="modalImage" class="img-fluid rounded mb-3" style="max-height: 300px;">
+        <p id="modalDetails"></p>
+
+        <!-- Related Cities Section -->
+<div id="relatedCitiesContainer" class="w-100 mt-3">
+  <h6 class="fw-bold">Popular Cities Nearby</h6>
+  <div id="relatedCitiesList" class="d-flex gap-3 flex-wrap"></div>
+</div>
+        <button class="btn btn-primary" onclick="addToWishlistFromModal()">💖 Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+

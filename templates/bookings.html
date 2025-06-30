@@ -1,0 +1,179 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | TravelGo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to right, #f8dcef, #dbdef9);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #6f00ff;
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: rgb(255, 255, 255) !important;
+      font-weight: bold;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 28px;
+    }
+
+    .emoji-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin: 50px 0;
+    }
+
+    .emoji-links a {
+      text-decoration: none;
+      font-size: 40px;
+      text-align: center;
+      color: #333333;
+      transition: transform 0.3s;
+    }
+
+    .emoji-links a:hover {
+      transform: scale(1.1);
+    }
+
+    .emoji-label {
+      display: block;
+      font-size: 18px;
+      margin-top: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+    }
+
+    .booking-info-box {
+      border: 2px solid #004aad;
+      background-color: #e6f0ff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 20px auto;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #003366;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .booking-info-box h4 {
+      margin-bottom: 15px;
+      color: #002244;
+    }
+
+    .booking-info-box p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-danger:hover {
+      background-color: #bb2d3b;
+      border-color: #b02a37;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">TravelGo</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/wishlist">💖 Wishlist</a></li>
+          <li class="nav-item"><a class="nav-link" href="/bookings">📜 Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout">🚪 Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome -->
+  <div class="container">
+    <h2 class="dashboard-header">
+      Hello, <strong>{{ session['username'] }}</strong>! Ready to explore? 🌍
+    </h2>
+
+    <!-- Booking Emoji Links -->
+    <div class="emoji-links">
+      <a href="{{ url_for('book_bus') }}"><span>🚌</span><span class="emoji-label">Bus</span></a>
+      <a href="{{ url_for('book_train') }}"><span>🚆</span><span class="emoji-label">Train</span></a>
+      <a href="{{ url_for('book_flight') }}"><span>✈️</span><span class="emoji-label">Flight</span></a>
+      <a href="{{ url_for('book_hotel') }}"><span>🏨</span><span class="emoji-label">Hotel</span></a>
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column align-items-center mt-4">
+    {% if bookings %}
+      {% for booking in bookings %}
+        <div class="booking-info-box">
+          <h4>
+            {% if booking.booking_type == 'hotel' %}
+              {{ booking.hotel_name }} <small class="text-muted">(Hotel)</small>
+            {% else %}
+              {{ booking.name or booking.airline or 'Unknown' }} <small class="text-muted">({{ booking.booking_type|capitalize }})</small>
+            {% endif %}
+          </h4>
+
+          {% if booking.booking_type == 'hotel' %}
+            <p><strong>Location:</strong> {{ booking.location }}</p>
+            <p><strong>Check-in:</strong> {{ booking.checkin_date }} | <strong>Check-out:</strong> {{ booking.checkout_date }}</p>
+            <p><strong>Room Type:</strong> {{ booking.room_type }}</p>
+            <p><strong>Rooms:</strong> {{ booking.num_rooms }} | <strong>Nights:</strong> {{ booking.num_nights }}</p>
+            <p><strong>Total Price:</strong> ₹{{ booking.total_price }}</p>
+          {% else %}
+            <p><strong>Route:</strong> {{ booking.source }} → {{ booking.destination }}</p>
+            <p><strong>Date:</strong> {{ booking.travel_date }} | <strong>Time:</strong> {{ booking.time }}</p>
+            <p><strong>Class/Type:</strong> {{ booking.type }}</p>
+
+            <p><strong>Passengers:</strong> {{ booking.num_persons }}</p>
+            <p><strong>Total Price:</strong> ₹{{ booking.total_price }}</p>
+            {% if booking.selected_seats %}
+              <p><strong>Seats:</strong> 
+                {% if booking.selected_seats is string %}
+                  {{ booking.selected_seats }}
+                {% else %}
+                  {{ booking.selected_seats | join(', ') }}
+                {% endif %}
+              </p>
+            {% endif %}
+          {% endif %}
+
+          <form method="POST" action="{{ url_for('bookings') }}">
+            <input type="hidden" name="booking_id" value="{{ booking['_id'] }}">
+            <button type="submit" class="btn btn-danger btn-sm">Cancel Booking</button>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No bookings found.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
